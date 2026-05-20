@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Walrus Memory — Setup Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #1a73e8;
+      --blue-lt: #e8f0fe;
+      --blue-md: #d2e3fc;
+      --dark:    #1a1a2e;
+      --grey:    #5f6368;
+      --border:  #e0e0e0;
+      --code-bg: #f8f9fa;
+      --warn:    #c0392b;
+      --warn-bg: #fdf0ef;
+      --ok:      #137333;
+      --ok-bg:   #e6f4ea;
+      --ok-bd:   #a8d5b5;
+      --radius:  10px;
+      --shadow:  0 1px 4px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #202124;
+      background: #f6f8fc;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────────────── */
+    header {
+      background: var(--dark);
+      color: #fff;
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.12);
+      color: rgba(255,255,255,.85);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: clamp(28px,5vw,46px);
+      font-weight: 700; letter-spacing: -.02em; line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    header h1 span { color: #8ab4f8; }
+    header p { font-size: 17px; color: rgba(255,255,255,.7); max-width: 520px; margin: 0 auto 32px; }
+    .tag-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .tag {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9); padding: 5px 14px; border-radius: 20px; font-size: 13px;
+    }
+
+    /* ── NAV ──────────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border); z-index: 100;
+      padding: 0 24px; display: flex; overflow-x: auto;
+    }
+    nav a {
+      display: block; padding: 14px 16px; font-size: 13px; font-weight: 500;
+      color: var(--grey); text-decoration: none; white-space: nowrap;
+      border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    }
+    nav a:hover, nav a.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+    /* ── MAIN ─────────────────────────────────────────────────────────── */
+    main { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* ── PROGRESS BAR ─────────────────────────────────────────────────── */
+    .progress-wrap {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px; margin: 32px 0 24px;
+      box-shadow: var(--shadow);
+    }
+    .progress-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .progress-label { font-size: 13px; font-weight: 600; color: var(--dark); }
+    .progress-count { font-size: 12px; color: var(--grey); }
+    .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--ok); border-radius: 3px; transition: width .4s ease; }
+    .progress-steps { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+    .prog-step {
+      font-size: 11px; font-weight: 500; padding: 4px 10px;
+      border-radius: 20px; border: 1px solid var(--border);
+      color: var(--grey); background: var(--code-bg); cursor: pointer;
+      transition: all .15s; user-select: none;
+    }
+    .prog-step.done { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-bd); }
+    .prog-step:hover { border-color: #aaa; }
+
+    /* ── INTRO CARD ───────────────────────────────────────────────────── */
+    .intro-card {
+      background: #fff; border: 1px solid var(--border);
+      border-left: 4px solid var(--blue); border-radius: var(--radius);
+      padding: 24px 28px; margin: 0 0 32px; box-shadow: var(--shadow);
+    }
+    .intro-card p { font-size: 15px; color: #3c4043; margin-top: 8px; }
+    .free-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--ok-bg); color: var(--ok);
+      font-size: 12px; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px; margin-top: 14px;
+    }
+
+    /* ── SECTION ──────────────────────────────────────────────────────── */
+    section { margin-top: 48px; }
+    section h2 {
+      font-size: 20px; font-weight: 700; color: var(--blue);
+      display: flex; align-items: center; gap: 12px;
+      padding-bottom: 12px; border-bottom: 2px solid var(--blue-lt);
+      margin-bottom: 20px;
+    }
+    section h2 .num {
+      background: var(--blue); color: #fff; font-size: 13px; font-weight: 700;
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    /* ── STEP CARD ────────────────────────────────────────────────────── */
+    .step-card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius); margin: 16px 0;
+      box-shadow: var(--shadow); overflow: hidden;
+      transition: border-color .2s;
+    }
+    .step-card.done { border-color: var(--ok-bd); }
+    .step-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px; cursor: pointer;
+    }
+    .step-header:hover { background: #fafafa; }
+    .step-num-badge {
+      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+      background: var(--dark); color: #fff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-card.done .step-num-badge { background: var(--ok); }
+    .step-title { flex: 1; font-size: 14px; font-weight: 600; color: var(--dark); }
+    .step-done-tag {
+      font-size: 11px; font-weight: 600; color: var(--ok);
+      background: var(--ok-bg); padding: 2px 8px; border-radius: 12px;
+      display: none;
+    }
+    .step-card.done .step-done-tag { display: inline; }
+    .step-chevron { font-size: 18px; color: #ccc; transition: transform .2s; }
+    .step-body { display: none; border-top: 1px solid var(--border); padding: 18px 20px; }
+    .step-body.open { display: block; }
+    .step-chevron.open { transform: rotate(180deg); }
+    .step-body p, .step-body li { font-size: 14px; color: #3c4043; }
+    .step-body ol, .step-body ul { padding-left: 20px; margin-top: 8px; }
+    .step-body li { margin-bottom: 4px; }
+
+    /* ── ASK CLAUDE BOX ───────────────────────────────────────────────── */
+    .ask-box {
+      background: var(--blue-lt); border: 1.5px solid #c5d8fb;
+      border-radius: var(--radius); padding: 16px 18px; margin: 16px 0;
+    }
+    .ask-box.main-prompt {
+      border-color: var(--blue); border-width: 2px;
+    }
+    .ask-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .ask-text {
+      font-size: 14px; color: var(--dark); font-style: italic;
+      line-height: 1.6; margin-bottom: 12px;
+    }
+    .ask-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btn-copy {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500;
+      background: #fff; color: var(--blue);
+      border: 1.5px solid #c5d8fb; border-radius: 7px;
+      padding: 7px 14px; cursor: pointer; transition: all .15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-copy:hover { background: var(--blue-md); border-color: var(--blue); }
+    .btn-copy.copied { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-bd); }
+    .btn-open {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500;
+      background: var(--blue); color: #fff;
+      border: none; border-radius: 7px;
+      padding: 7px 14px; cursor: pointer; transition: opacity .15s;
+      text-decoration: none;
+    }
+    .btn-open:hover { opacity: .88; }
+    .paste-hint { font-size: 11px; color: var(--grey); font-style: normal; }
+
+    /* ── MARK DONE BUTTON ─────────────────────────────────────────────── */
+    .btn-mark {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500;
+      background: transparent; color: var(--grey);
+      border: 1px solid var(--border); border-radius: 7px;
+      padding: 6px 12px; cursor: pointer; transition: all .15s;
+      font-family: 'Inter', sans-serif; margin-top: 14px;
+    }
+    .btn-mark:hover { border-color: var(--ok); color: var(--ok); background: var(--ok-bg); }
+    .step-card.done .btn-mark { background: var(--ok-bg); color: var(--ok); border-color: var(--ok-bd); }
+
+    /* ── CODE ─────────────────────────────────────────────────────────── */
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 18px;
+      overflow-x: auto; margin: 10px 0;
+    }
+    code {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 13px; color: #2d2d2d; line-height: 1.6;
+    }
+    p code, li code {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 6px; font-size: .9em;
+    }
+
+    /* ── WARN / NOTE / OK ─────────────────────────────────────────────── */
+    .warn {
+      background: var(--warn-bg); border-left: 4px solid var(--warn);
+      border-radius: 6px; padding: 11px 15px;
+      font-size: 13.5px; color: var(--warn); font-weight: 500; margin: 12px 0;
+    }
+    .note {
+      background: #fff8e6; border-left: 4px solid #f9ab00;
+      border-radius: 6px; padding: 11px 15px;
+      font-size: 13.5px; color: #7a5800; margin: 12px 0;
+    }
+    .ok-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--ok-bg); color: var(--ok);
+      font-size: 13px; font-weight: 600;
+      padding: 7px 14px; border-radius: 6px; margin-top: 10px;
+    }
+
+    /* ── QUICK PROMPTS GRID ───────────────────────────────────────────── */
+    .quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+    @media (max-width: 560px) { .quick-grid { grid-template-columns: 1fr; } }
+    .quick-pill {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 13px 16px;
+      cursor: pointer; transition: all .15s; text-align: left;
+      box-shadow: var(--shadow);
+    }
+    .quick-pill:hover { border-color: var(--blue); background: var(--blue-lt); }
+    .quick-pill .ql { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--grey); margin-bottom: 4px; }
+    .quick-pill .qt { font-size: 13.5px; font-style: italic; color: var(--dark); line-height: 1.5; }
+    .quick-pill.copied-pill { border-color: var(--ok); background: var(--ok-bg); }
+    .quick-pill.copied-pill .qt { color: var(--ok); font-style: normal; font-weight: 600; }
+
+    /* ── TROUBLESHOOT TABLE ───────────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    th { background: var(--dark); color: #fff; padding: 10px 16px; text-align: left; font-weight: 600; }
+    td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    td:first-child { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--warn); }
+
+    /* ── ARCH DIAGRAM ─────────────────────────────────────────────────── */
+    .arch {
+      background: var(--dark); color: #e8eaf6;
+      border-radius: var(--radius); padding: 28px 32px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      line-height: 2; overflow-x: auto;
+    }
+    .arch .hl { color: #8ab4f8; }
+
+    /* ── FOOTER ───────────────────────────────────────────────────────── */
+    footer {
+      text-align: center; padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px; color: var(--grey);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .step-body { padding: 14px 16px; }
+      header { padding: 48px 20px 40px; }
+      .quick-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Setup Guide</div>
+  <h1>Walrus <span>Memory</span></h1>
+  <p>Give Claude and Gemini long-term memory that persists across every conversation.</p>
+  <div class="tag-row">
+    <span class="tag">🍎 macOS</span>
+    <span class="tag">🤖 Claude Cowork</span>
+    <span class="tag">✦ Gemini CLI</span>
+    <span class="tag">🆓 Free during beta</span>
+  </div>
+</header>
+
+<nav id="mainnav">
+  <a href="#what">What is it?</a>
+  <a href="#prereqs">Prerequisites</a>
+  <a href="#account">1 · Account</a>
+  <a href="#claude">2 · Claude</a>
+  <a href="#gemini">3 · Gemini</a>
+  <a href="#usage">4 · Day-to-day</a>
+  <a href="#troubleshoot">Troubleshooting</a>
+</nav>
+
+<main>
+
+  <!-- PROGRESS TRACKER -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-top">
+      <span class="progress-label">Your progress</span>
+      <span class="progress-count" id="prog-count">0 / 6 steps done</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="progress-steps" id="prog-steps"></div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro-card" id="what">
+    <strong style="font-size:17px;color:var(--dark);">What is Walrus Memory?</strong>
+    <p>Walrus Memory gives AI assistants like Claude and Gemini <strong>long-term memory</strong> — they remember what you tell them even after you close the app and start a new conversation. Claude and Gemini share the same memory, so what one knows, the other knows too.</p>
+    <div class="free-pill">✓ Free during beta — no credit card needed</div>
+  </div>
+
+  <!-- PREREQUISITES -->
+  <section id="prereqs">
+    <h2><span class="num">0</span> Before You Start</h2>
+
+    <div class="step-card" id="sc-0">
+      <div class="step-header" onclick="toggleStep(0)">
+        <div class="step-num-badge" id="snb-0">0</div>
+        <div class="step-title">Check prerequisites</div>
+        <div class="step-done-tag">✓ Done</div>
+        <div class="step-chevron" id="chev-0">›</div>
+      </div>
+      <div class="step-body" id="sb-0">
+        <p>You need:</p>
+        <ul style="margin-top:10px;">
+          <li>A <strong>Mac</strong></li>
+          <li><strong>Claude Cowork</strong> or Claude Desktop installed</li>
+          <li><strong>Node.js 20+</strong> — not sure if you have it?</li>
+        </ul>
+        <div class="ask-box main-prompt" style="margin-top:14px;">
+          <div class="ask-label">💬 Ask Claude — copy &amp; paste into Claude</div>
+          <div class="ask-text">Is Node.js installed on my Mac? Run: node --version — if it's not installed, tell me how to install it.</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'Is Node.js installed on my Mac? Run: node --version — if it\'s not installed, tell me how to install it.')">⎘ Copy prompt</button>
+            <a class="btn-open" href="https://claude.ai" target="_blank">Open Claude ↗</a>
+            <span class="paste-hint">Copy → open Claude → paste → send</span>
+          </div>
+        </div>
+        <button class="btn-mark" onclick="markDone(0)"><span id="mark-icon-0">○</span> <span id="mark-label-0">Mark step as done</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 1: ACCOUNT -->
+  <section id="account">
+    <h2><span class="num">1</span> Create Your Walrus Memory Account</h2>
+
+    <div class="ask-box main-prompt">
+      <div class="ask-label">💬 Ask Claude to guide you through this whole section</div>
+      <div class="ask-text">Help me create a Walrus Memory account at memwal.xyz and configure it. I want to sign in with Google.</div>
+      <div class="ask-actions">
+        <button class="btn-copy" onclick="copyPrompt(this,'Help me create a Walrus Memory account at memwal.xyz and configure it. I want to sign in with Google.')">⎘ Copy prompt</button>
+        <a class="btn-open" href="https://claude.ai" target="_blank">Open Claude ↗</a>
+      </div>
+    </div>
+
+    <div class="step-card" id="sc-1">
+      <div class="step-header" onclick="toggleStep(1)">
+        <div class="step-num-badge" id="snb-1">1</div>
+        <div class="step-title">Create your account at memwal.xyz</div>
+        <div class="step-done-tag">✓ Done</div>
+        <div class="step-chevron" id="chev-1">›</div>
+      </div>
+      <div class="step-body" id="sb-1">
+        <ol>
+          <li>Go to <a href="https://memwal.xyz" target="_blank">memwal.xyz</a></li>
+          <li>Click <strong>"Sign in with Google"</strong> and sign in with your Google account</li>
+          <li>Your account is created automatically — no extra steps needed</li>
+        </ol>
+        <div class="ok-badge">✓ You're logged in — proceed to the next step</div>
+        <button class="btn-mark" onclick="markDone(1)"><span id="mark-icon-1">○</span> <span id="mark-label-1">Mark step as done</span></button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PART 2: CLAUDE -->
+  <section id="claude">
+    <h2><span class="num">2</span> Connect Walrus Memory to Claude</h2>
+
+    <div class="ask-box main-prompt">
+      <div class="ask-label">💬 Ask Claude to do all of Part 2 for you</div>
+      <div class="ask-text">Set up Walrus Memory on my Mac so you have long-term memory. The package is @mysten-incubation/memwal-mcp and it runs via npx. Run the login command, edit your config file, then restart and verify the connection works. Walk me through every step.</div>
+      <div class="ask-actions">
+        <button class="btn-copy" onclick="copyPrompt(this,'Set up Walrus Memory on my Mac so you have long-term memory. The package is @mysten-incubation/memwal-mcp and it runs via npx. Run the login command, edit your config file, then restart and verify the connection works. Walk me through every step.')">⎘ Copy prompt</button>
+        <a class="btn-open" href="https://claude.ai" target="_blank">Open Claude ↗</a>
+      </div>
+    </div>
+
+    <div class="step-card" id="sc-2">
+      <div class="step-header" onclick="toggleStep(2)">
+        <div class="step-num-badge" id="snb-2">2</div>
+        <div class="step-title">Log in to Walrus Memory</div>
+        <div class="step-done-tag">✓ Done</div>
+        <div class="step-chevron" id="chev-2">›</div>
+      </div>
+      <div class="step-body" id="sb-2">
+        <p>Open <strong>Terminal</strong> on your Mac and run:</p>
+        <pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre>
+        <p>Your browser will open — approve the connection. Credentials are saved automatically.</p>
+        <div class="note">📌 Run this in a regular Terminal window, not inside Claude.</div>
+        <div class="ask-box" style="margin-top:14px;">
+          <div class="ask-label">💬 Or ask Claude to run this for you</div>
+          <div class="ask-text">Run this command for me in Terminal and tell me what happens: npx -y @mysten-incubation/memwal-mcp login --prod</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'Run this command for me in Terminal and tell me what happens: npx -y @mysten-incubation/memwal-mcp login --prod')">⎘ Copy prompt</button>
+          </div>
+        </div>
+        <button class="btn-mark" onclick="markDone(2)"><span id="mark-icon-2">○</span> <span id="mark-label-2">Mark step as done</span></button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sc-3">
+      <div class="step-header" onclick="toggleStep(3)">
+        <div class="step-num-badge" id="snb-3">3</div>
+        <div class="step-title">Edit Claude's config file</div>
+        <div class="step-done-tag">✓ Done</div>
+        <div class="step-chevron" id="chev-3">›</div>
+      </div>
+      <div class="step-body" id="sb-3">
+        <div class="ask-box main-prompt">
+          <div class="ask-label">💬 Ask Claude to do this for you</div>
+          <div class="ask-text">Edit my Claude config file to add the Walrus Memory MCP server. The config is at ~/Library/Application Support/Claude/claude_desktop_config.json — add a "memwal" entry under "mcpServers" that runs npx -y @mysten-incubation/memwal-mcp. Then tell me to restart Claude.</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'Edit my Claude config file to add the Walrus Memory MCP server. The config is at ~/Library/Application Support/Claude/claude_desktop_config.json — add a &quot;memwal&quot; entry under &quot;mcpServers&quot; that runs npx -y @mysten-incubation/memwal-mcp. Then tell me to restart Claude.')">⎘ Copy prompt</button>
+            <a class="btn-open" href="https://claude.ai" target="_blank">Open Claude ↗</a>
+          </div>
+        </div>
+        <p style="color:var(--grey);font-size:13px;margin-top:4px;">Or do it manually — open this file in any text editor:</p>
+        <pre><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></pre>
+        <p>Add this inside the <code>"mcpServers"</code> section:</p>
+        <pre><code>"memwal": {
+  "command": "npx",
+  "args": ["-y", "@mysten-incubation/memwal-mcp"]
+}</code></pre>
+        <div class="note">📌 If you get an "npx not found" error, ask Claude: <em>"What is the full path to npx on my Mac?"</em></div>
+        <button class="btn-mark" onclick="markDone(3)"><span id="mark-icon-3">○</span> <span id="mark-label-3">Mark step as done</span></button>
+      </div>
+    </div>
+
+    <div class="step-card" id="sc-4" style="margin-bottom:0">
+      <div class="step-header" onclick="toggleStep(4)">
+        <div class="step-num-badge" id="snb-4">4</div>
+        <div class="step-title">Restart Claude and verify the connection</div>
+        <div class="step-done-tag">✓ Done</div>
+        <div class="step-chevron" id="chev-4">›</div>
+      </div>
+      <div class="step-body" id="sb-4">
+        <p>Quit Claude completely with <code>Cmd+Q</code> (just closing the window is not enough) and reopen it.</p>
+        <p style="margin-top:12px;">Then verify it's connected:</p>
+        <div class="ask-box">
+          <div class="ask-label">💬 Ask Claude</div>
+          <div class="ask-text">What Walrus Memory tools do you have available?</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'What Walrus Memory tools do you have available?')">⎘ Copy prompt</button>
+          </div>
+        </div>
+        <p style="margin-top:12px;">You should see: <code>memwal_remember</code>, <code>memwal_recall</code>, <code>memwal_analyze</code>, <code>memwal_restore</code>, <code>memwal_login</code>, <code>memwal_logout</code>.</p>
+        <p style="margin-top:14px;">Now do a quick end-to-end test:</p>
+        <div class="ask-box">
+          <div class="ask-label">💬 Save a test memory</div>
+          <div class="ask-text">Use memwal_remember to save: I work at Mysten Labs.</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'Use memwal_remember to save: I work at Mysten Labs.')">⎘ Copy prompt</button>
+          </div>
+        </div>
+        <div class="ask-box" style="margin-top:8px;">
+          <div class="ask-label">💬 Then recall it</div>
+          <div class="ask-text">Use memwal_recall to find: where do I work?</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'Use memwal_recall to find: where do I work?')">⎘ Copy prompt</button>
+          </div>
+        </div>
+        <div class="ok-badge">✅ Claude should retrieve the memory you just saved.</div>
+        <button class="btn-mark" onclick="markDone(4)"><span id="mark-icon-4">○</span> <span id="mark-label-4">Mark step as done</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 3: GEMINI -->
+  <section id="gemini">
+    <h2><span class="num">3</span> Connect Walrus Memory to Gemini CLI</h2>
+
+    <div class="note" style="margin-bottom:16px;">📌 Once set up, Claude and Gemini automatically share the same memories — no extra configuration needed.</div>
+
+    <div class="ask-box main-prompt">
+      <div class="ask-label">💬 Ask Claude to do all of Part 3 for you</div>
+      <div class="ask-text">Set up Gemini CLI on my Mac with Walrus Memory: install @google/gemini-cli globally, create the folder ~/Documents/gemini-workspace, and configure ~/.gemini/settings.json to use the same Walrus Memory MCP server that you use (npx -y @mysten-incubation/memwal-mcp). Then tell me how to authenticate Gemini for the first time.</div>
+      <div class="ask-actions">
+        <button class="btn-copy" onclick="copyPrompt(this,'Set up Gemini CLI on my Mac with Walrus Memory: install @google/gemini-cli globally, create the folder ~/Documents/gemini-workspace, and configure ~/.gemini/settings.json to use the same Walrus Memory MCP server that you use (npx -y @mysten-incubation/memwal-mcp). Then tell me how to authenticate Gemini for the first time.')">⎘ Copy prompt</button>
+        <a class="btn-open" href="https://claude.ai" target="_blank">Open Claude ↗</a>
+      </div>
+    </div>
+
+    <div class="step-card" id="sc-5">
+      <div class="step-header" onclick="toggleStep(5)">
+        <div class="step-num-badge" id="snb-5">5</div>
+        <div class="step-title">Install Gemini CLI and configure Walrus Memory</div>
+        <div class="step-done-tag">✓ Done</div>
+        <div class="step-chevron" id="chev-5">›</div>
+      </div>
+      <div class="step-body" id="sb-5">
+        <p><strong>Install Gemini CLI:</strong></p>
+        <pre><code>npm install -g @google/gemini-cli</code></pre>
+        <p style="margin-top:12px;"><strong>Create a dedicated workspace folder</strong> (prevents Mac security alerts):</p>
+        <pre><code>mkdir -p ~/Documents/gemini-workspace</code></pre>
+        <p style="margin-top:12px;"><strong>Open or create</strong> <code>~/.gemini/settings.json</code> and add:</p>
+        <pre><code>{
+  "sandbox": true,
+  "mcpServers": {
+    "memwal": {
+      "command": "npx",
+      "args": ["-y", "@mysten-incubation/memwal-mcp"]
+    }
+  }
+}</code></pre>
+        <p style="margin-top:12px;"><strong>Authenticate and launch Gemini</strong> from the workspace folder:</p>
+        <pre><code>cd ~/Documents/gemini-workspace && gemini</code></pre>
+        <p>Your browser will open — sign in with Google.</p>
+        <p style="margin-top:14px;"><strong>Verify Gemini can read your memories:</strong></p>
+        <div class="ask-box">
+          <div class="ask-label">💬 Type this inside Gemini CLI</div>
+          <div class="ask-text">Do you have access to Walrus Memory tools? Call memwal_recall and search for where do I work.</div>
+          <div class="ask-actions">
+            <button class="btn-copy" onclick="copyPrompt(this,'Do you have access to Walrus Memory tools? Call memwal_recall and search for where do I work.')">⎘ Copy prompt</button>
+          </div>
+        </div>
+        <div class="ok-badge">✅ Gemini should find the same memory you saved from Claude.</div>
+        <button class="btn-mark" onclick="markDone(5)"><span id="mark-icon-5">○</span> <span id="mark-label-5">Mark step as done</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4: DAY-TO-DAY -->
+  <section id="usage">
+    <h2><span class="num">4</span> Day-to-Day Usage</h2>
+    <p style="color:var(--grey);margin-bottom:20px;font-size:14px;">Once set up, just talk naturally. Click any card to copy the prompt, then paste it into Claude or Gemini.</p>
+
+    <div class="quick-grid">
+      <div class="quick-pill" onclick="quickCopy(this,'Remember that our offsite is in Montreal from June 8 to 12.')">
+        <div class="ql">💾 Save something</div>
+        <div class="qt">Remember that our offsite is in Montreal from June 8 to 12.</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'What do you know about upcoming events?')">
+        <div class="ql">🔍 Retrieve something</div>
+        <div class="qt">What do you know about upcoming events?</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'Save to memory: I prefer async communication and I work in Pacific Time.')">
+        <div class="ql">💾 Save preferences</div>
+        <div class="qt">Save to memory: I prefer async communication and I work in Pacific Time.</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'What are my work preferences?')">
+        <div class="ql">🔍 Recall preferences</div>
+        <div class="qt">What are my work preferences?</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'Use memwal_analyze on this: I\'m based in San Francisco, I lead the DevRel team, I prefer written docs over meetings, my timezone is PT.')">
+        <div class="ql">⚡ Save multiple facts</div>
+        <div class="qt">Use memwal_analyze on this: I'm in San Francisco, I lead DevRel, I prefer written docs, timezone is PT.</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'List all my Walrus memories.')">
+        <div class="ql">📋 List everything</div>
+        <div class="qt">List all my Walrus memories.</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'Forget the Montreal offsite — it\'s been rescheduled.')">
+        <div class="ql">🗑️ Delete a memory</div>
+        <div class="qt">Forget the Montreal offsite — it's been rescheduled.</div>
+      </div>
+      <div class="quick-pill" onclick="quickCopy(this,'Is Walrus Memory connected and working?')">
+        <div class="ql">📡 Check connection</div>
+        <div class="qt">Is Walrus Memory connected and working?</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section id="troubleshoot">
+    <h2><span class="num">?</span> Troubleshooting</h2>
+    <table>
+      <tr><th>Problem</th><th>What to do</th></tr>
+      <tr>
+        <td>npx not found</td>
+        <td>Ask Claude: <em>"What is the full path to npx on my Mac?"</em> and use that path instead of <code>npx</code>.</td>
+      </tr>
+      <tr>
+        <td>Only memwal_login shows in tools</td>
+        <td>Run the login command again (Step 2).</td>
+      </tr>
+      <tr>
+        <td>Recall returns nothing</td>
+        <td>Wait 10–20 seconds after saving and try again — memory writes are not instant.</td>
+      </tr>
+      <tr>
+        <td>Mac security alert in Gemini</td>
+        <td>Always launch Gemini from <code>~/Documents/gemini-workspace</code> (Step 5).</td>
+      </tr>
+      <tr>
+        <td>Error "426 Upgrade Required"</td>
+        <td>Ask Claude: <em>"Update the Walrus Memory SDK to the latest version."</em></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <h2><span class="num">∿</span> How It Works</h2>
+    <p style="color:var(--grey);font-size:14px;margin-bottom:18px;">Claude and Gemini connect to the same local server, which stores memories on Walrus — a decentralized storage network built by Mysten Labs — with end-to-end encryption. Only you can read your memories.</p>
+    <div class="arch">
+<span class="hl">Claude (Cowork)</span>  ──┐
+                    ├──▶  Walrus Memory MCP  <span style="color:#aaa">(runs on your Mac)</span>
+<span class="hl">Gemini CLI</span>       ──┘          │
+                                 ▼
+                    <span class="hl">MemWal Relayer</span>  <span style="color:#aaa">(relayer.memwal.ai)</span>
+                                 │
+                                 ▼
+                    <span class="hl">Walrus</span>  <span style="color:#aaa">— decentralized encrypted storage</span>
+                                 │
+                    <span class="hl">Sui blockchain</span>  <span style="color:#aaa">— access control</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Walrus Memory is in beta — free to use. For the latest docs visit <a href="https://docs.memwal.ai" target="_blank">docs.memwal.ai</a>
+</footer>
+
+<script>
+const STEP_LABELS = [
+  'Check Node.js',
+  'Create account',
+  'Login command',
+  'Edit config',
+  'Restart & verify',
+  'Gemini setup'
+];
+const TOTAL = STEP_LABELS.length;
+const DONE_KEY = 'wmDoneSteps_v2';
+
+function loadDone() {
+  try { return JSON.parse(localStorage.getItem(DONE_KEY) || '{}'); } catch(e) { return {}; }
+}
+function saveDone(d) {
+  try { localStorage.setItem(DONE_KEY, JSON.stringify(d)); } catch(e) {}
+}
+
+let done = loadDone();
+
+function buildProgressPills() {
+  const container = document.getElementById('prog-steps');
+  container.innerHTML = '';
+  STEP_LABELS.forEach((label, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'prog-step' + (done[i] ? ' done' : '');
+    btn.id = 'pp-' + i;
+    btn.textContent = (done[i] ? '✓ ' : '') + label;
+    btn.title = 'Click to toggle step ' + (i+1);
+    btn.onclick = () => markDone(i);
+    container.appendChild(btn);
+  });
+}
+
+function updateProgress() {
+  const count = Object.values(done).filter(Boolean).length;
+  const pct = Math.round(count / TOTAL * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-count').textContent = count + ' / ' + TOTAL + ' steps done';
+  STEP_LABELS.forEach((_, i) => {
+    const pill = document.getElementById('pp-' + i);
+    if (pill) {
+      pill.className = 'prog-step' + (done[i] ? ' done' : '');
+      pill.textContent = (done[i] ? '✓ ' : '') + STEP_LABELS[i];
+    }
+    const card = document.getElementById('sc-' + i);
+    const badge = document.getElementById('snb-' + i);
+    const markIcon = document.getElementById('mark-icon-' + i);
+    const markLabel = document.getElementById('mark-label-' + i);
+    if (card) {
+      card.classList.toggle('done', !!done[i]);
+      if (badge) badge.textContent = done[i] ? '✓' : (i + 1) + '';
+      if (markIcon) markIcon.textContent = done[i] ? '✓' : '○';
+      if (markLabel) markLabel.textContent = done[i] ? 'Mark as not done' : 'Mark step as done';
+    }
+  });
+}
+
+function markDone(i) {
+  done[i] = !done[i];
+  saveDone(done);
+  updateProgress();
+}
+
+function toggleStep(i) {
+  const body = document.getElementById('sb-' + i);
+  const chev = document.getElementById('chev-' + i);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+  chev.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
+function copyPrompt(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+function quickCopy(el, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const qt = el.querySelector('.qt');
+    const origText = qt.textContent;
+    el.classList.add('copied-pill');
+    qt.textContent = '✓ Copied! Paste into Claude or Gemini.';
+    setTimeout(() => {
+      el.classList.remove('copied-pill');
+      qt.textContent = origText;
+    }, 2000);
+  });
+}
+
+buildProgressPills();
+updateProgress();
+</script>
+</body>
+</html>
