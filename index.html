@@ -482,7 +482,7 @@
             <button class="btn-copy" onclick="copyPrompt(this,'What Walrus Memory tools do you have available?')">⎘ Copy prompt</button>
           </div>
         </div>
-        <p style="margin-top:12px;">You should see: <code>memwal_remember</code>, <code>memwal_recall</code>, <code>memwal_analyze</code>, <code>memwal_restore</code>, <code>memwal_login</code>, <code>memwal_logout</code>.</p>
+        <p style="margin-top:12px;">You should see: <code>memwal_remember</code>, <code>memwal_recall</code>, <code>memwal_forget</code>, <code>memwal_health</code>, <code>memwal_list</code>.</p>
         <p style="margin-top:14px;">Now do a quick end-to-end test:</p>
         <div class="ask-box">
           <div class="ask-label">💬 Save a test memory</div>
@@ -580,9 +580,9 @@
         <div class="ql">🔍 Recall preferences</div>
         <div class="qt">What are my work preferences?</div>
       </div>
-      <div class="quick-pill" onclick="quickCopy(this,'Use memwal_analyze on this: I\'m based in San Francisco, I lead the DevRel team, I prefer written docs over meetings, my timezone is PT.')">
+      <div class="quick-pill" onclick="quickCopy(this,'Save these facts to memory one by one: I\'m based in San Francisco. I lead the DevRel team. I prefer written docs over meetings. My timezone is PT.')">
         <div class="ql">⚡ Save multiple facts</div>
-        <div class="qt">Use memwal_analyze on this: I'm in San Francisco, I lead DevRel, I prefer written docs, timezone is PT.</div>
+        <div class="qt">Save these facts to memory one by one: I'm in San Francisco. I lead DevRel. I prefer written docs. Timezone is PT.</div>
       </div>
       <div class="quick-pill" onclick="quickCopy(this,'List all my Walrus memories.')">
         <div class="ql">📋 List everything</div>
@@ -609,8 +609,8 @@
         <td>Ask Claude: <em>"What is the full path to npx on my Mac?"</em> and use that path instead of <code>npx</code>.</td>
       </tr>
       <tr>
-        <td>Only memwal_login shows in tools</td>
-        <td>Run the login command again (Step 2).</td>
+        <td>Only memwal_recall and memwal_remember show</td>
+        <td>Run the login command again (Step 2) — some tools only appear when authenticated.</td>
       </tr>
       <tr>
         <td>Recall returns nothing</td>
