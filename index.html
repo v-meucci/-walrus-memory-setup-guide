@@ -699,15 +699,12 @@ const STEPS = {
       content: `
         <div class="instr">
           <ol>
-            <li>Open <strong>Terminal</strong> (press <code>Cmd+Space</code>, type Terminal, press Enter). <br><em>Important: use a regular terminal window — not a terminal inside Claude.</em></li>
-            <li>Copy and paste this command, then press Enter:<pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre></li>
-            <li>Your browser will automatically open to <strong>memwal.ai/connect/mcp</strong>.</li>
-            <li>On that page, click <strong>"Create Delegate Key"</strong> and approve.</li>
-            <li>You can close the browser tab. Back in terminal, you should see a confirmation message.</li>
+            <li>In your terminal, run:<pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre></li>
+            <li>Your browser will open — click <strong>"Create Delegate Key"</strong> and approve.</li>
+            <li>Done. The credentials are saved automatically to <code>~/.memwal/credentials.json</code> — you never need to touch them again.</li>
           </ol>
         </div>
-        <div class="note">📌 what just happened: a secure token (delegate key) was saved to <code>~/.memwal/credentials.json</code> on your mac. claude will use it automatically to authenticate — you never need to touch it again.</div>
-        <div class="warn">if you get <em>"npx not found"</em>: ask claude — "what is the full path to npx on my Mac?" — and use that full path instead of <code>npx</code>.</div>
+        <div class="note">if you get <em>"npx not found"</em>: ask claude — "what is the full path to npx on my Mac?" — and use that full path instead of <code>npx</code>.</div>
       `
     },
     {
