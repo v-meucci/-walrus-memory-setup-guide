@@ -579,34 +579,40 @@ const STEPS = {
     },
     {
       title: 'create your account',
-      sub: 'sign in at memwal.xyz with google — this creates your account and your personal memory wallet.',
+      sub: 'sign in at memwal.xyz with google — and copy your account id before moving on.',
       content: `
-        <div class="prompt-box">
-          <div class="prompt-label">💬 paste this into claude</div>
-          <div class="prompt-text">Open memwal.xyz for me so I can create a Walrus Memory account by signing in with Google.</div>
-          <div class="prompt-actions">
-            <button class="btn btn-copy" onclick="cp(this,'Open memwal.xyz for me so I can create a Walrus Memory account by signing in with Google.')">⎘ copy prompt</button>
-            <a class="btn btn-dark" href="https://memwal.xyz" target="_blank">open memwal.xyz ↗</a>
-          </div>
+        <div class="instr">
+          <ol>
+            <li>Go to <a href="https://memwal.xyz" target="_blank">memwal.xyz</a> and click <strong>"Sign in with Google"</strong>.</li>
+            <li>Once logged in, look at the <strong>top right corner</strong> — you'll see your account ID: a long address starting with <code>0x…</code></li>
+            <li><strong>Copy it and paste it somewhere safe</strong> (Notes, a text file — anywhere). You'll need it in the next step.</li>
+          </ol>
         </div>
-        <div class="note">📌 once signed in, you'll see your <strong>account ID</strong> — a long address starting with <code>0x…</code> — in the top right corner of the dashboard. that's your unique identity on walrus. you don't need to copy it anywhere; it's saved automatically.</div>
-        <div class="ok-badge">✓ once you're logged in on memwal.xyz, click next</div>
+        <div class="warn">⚠️ don't skip copying the account ID — you'll need it to configure claude.</div>
+        <div class="ok-badge">✓ account ID copied? click next</div>
       `
     },
     {
       title: 'create a delegate key',
-      sub: 'a delegate key is a secure token that lets this mac connect to your memory. you only do this once per device.',
+      sub: 'a delegate key lets this mac talk to your memory. it\'s shown only once — copy it immediately.',
       content: `
-        <div class="prompt-box">
-          <div class="prompt-label">💬 paste this into claude</div>
-          <div class="prompt-text">Set up Walrus Memory on my Mac so you have long-term memory. The package is @mysten-incubation/memwal-mcp and it runs via npx. Run the login command, edit your config file, then tell me when to restart. Walk me through every step.</div>
+        <div class="instr">
+          <ol>
+            <li>On the memwal dashboard, click <strong>"create delegate key"</strong>.</li>
+            <li>A private key will appear — it looks like a long string of letters and numbers.</li>
+            <li><strong>Copy it immediately</strong> and save it alongside your account ID. <em>It will not be shown again.</em></li>
+          </ol>
+        </div>
+        <div class="warn">⚠️ the private key is shown only once. if you close the page without copying it, you'll need to create a new one.</div>
+        <div class="prompt-box" style="margin-top:16px;">
+          <div class="prompt-label">💬 now paste this into claude — with your two values</div>
+          <div class="prompt-text">Edit my Claude config file to add Walrus Memory. Add a "memwal" entry under "mcpServers" that runs npx -y @mysten-incubation/memwal-mcp with these env vars — MEMWAL_PRIVATE_KEY: [paste your private key] and MEMWAL_ACCOUNT_ID: [paste your account id]. Then tell me to restart Claude.</div>
           <div class="prompt-actions">
-            <button class="btn btn-copy" onclick="cp(this,'Set up Walrus Memory on my Mac so you have long-term memory. The package is @mysten-incubation/memwal-mcp and it runs via npx. Run the login command, edit your config file, then tell me when to restart. Walk me through every step.')">⎘ copy prompt</button>
+            <button class="btn btn-copy" onclick="cp(this,'Edit my Claude config file to add Walrus Memory. Add a \\"memwal\\" entry under \\"mcpServers\\" that runs npx -y @mysten-incubation/memwal-mcp with these env vars — MEMWAL_PRIVATE_KEY: [paste your private key] and MEMWAL_ACCOUNT_ID: [paste your account id]. Then tell me to restart Claude.')">⎘ copy prompt</button>
             <a class="btn btn-dark" href="https://claude.ai" target="_blank">open claude ↗</a>
           </div>
         </div>
-        <div class="warn">⚠️ when the login command opens your browser — follow the on-screen instructions to approve the connection. this saves a secure token on your mac so claude can authenticate automatically from now on.</div>
-        <div class="note">📌 come back here once claude tells you to restart.</div>
+        <div class="note">📌 replace [paste your private key] and [paste your account id] with the actual values before sending.</div>
       `
     },
     {
@@ -681,49 +687,64 @@ const STEPS = {
     },
     {
       title: 'create your account',
-      sub: 'sign in at memwal.xyz with google — this creates your account and your personal memory wallet.',
+      sub: 'sign in at memwal.xyz with google — and copy your account id before moving on.',
       content: `
         <div class="instr">
           <ol>
-            <li>Go to <a href="https://memwal.xyz" target="_blank">memwal.xyz</a>.</li>
-            <li>Click <strong>"Sign in with Google"</strong> and sign in with your Google account.</li>
-            <li>Your account is created automatically — no extra steps needed.</li>
-            <li>You'll see your <strong>account ID</strong> in the top right corner — a long address starting with <code>0x…</code>. That's your unique identity on walrus. You don't need to copy it; it's saved automatically when you run the login command in the next step.</li>
+            <li>Go to <a href="https://memwal.xyz" target="_blank">memwal.xyz</a> and click <strong>"Sign in with Google"</strong>.</li>
+            <li>Once logged in, look at the <strong>top right corner</strong> — you'll see your account ID: a long address starting with <code>0x…</code></li>
+            <li><strong>Copy it and paste it somewhere safe</strong> (Notes, a text file). You'll need it in step 4.</li>
           </ol>
         </div>
-        <div class="ok-badge">✓ once you're logged in, click next</div>
+        <div class="warn">⚠️ don't skip copying the account ID — you'll need it to configure claude.</div>
+        <div class="ok-badge">✓ account ID copied? click next</div>
       `
     },
     {
       title: 'create a delegate key',
-      sub: 'a delegate key is a secure token that lets this mac connect to your memory. you only do this once per device.',
+      sub: 'a delegate key lets this mac talk to your memory. it\'s shown only once — copy it immediately.',
       content: `
         <div class="instr">
           <ol>
-            <li>In your terminal, run:<pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre></li>
-            <li>Your browser will open — follow the on-screen instructions to approve the connection.</li>
-            <li>Done. The credentials are saved automatically to <code>~/.memwal/credentials.json</code> — you never need to touch them again.</li>
+            <li>On the memwal dashboard, click <strong>"create delegate key"</strong>.</li>
+            <li>A private key will appear — a long string of letters and numbers.</li>
+            <li><strong>Copy it immediately</strong> and save it alongside your account ID. <em>It will not be shown again.</em></li>
           </ol>
         </div>
-        <div class="note">if you get <em>"npx not found"</em>: ask claude — "what is the full path to npx on my Mac?" — and use that full path instead of <code>npx</code>.</div>
+        <div class="warn">⚠️ the private key is shown only once. if you close the page without copying it, you'll need to create a new one.</div>
       `
     },
     {
       title: 'edit claude\'s config',
-      sub: 'add walrus memory to claude\'s mcp server list.',
+      sub: 'add walrus memory to claude\'s config with your two keys.',
       content: `
         <div class="instr">
           <ol>
             <li>Open this file in any text editor:<pre><code>~/Library/Application Support/Claude/claude_desktop_config.json</code></pre></li>
-            <li>Find the <code>"mcpServers"</code> section and add the memwal entry:</li>
+            <li>Add this entry inside <code>"mcpServers"</code> — replacing the two placeholder values with your actual keys:</li>
           </ol>
         </div>
         <pre><code>"memwal": {
   "command": "npx",
-  "args": ["-y", "@mysten-incubation/memwal-mcp"]
+  "args": ["-y", "@mysten-incubation/memwal-mcp"],
+  "env": {
+    "MEMWAL_PRIVATE_KEY": "your-delegate-private-key",
+    "MEMWAL_ACCOUNT_ID":  "your-account-id-0x..."
+  }
 }</code></pre>
-        <div class="note">📌 if the file doesn't exist yet, create it with this full content:<br><br>
-          <code>{"mcpServers":{"memwal":{"command":"npx","args":["-y","@mysten-incubation/memwal-mcp"]}}}</code>
+        <div class="note">📌 if the file doesn't exist yet, create it with this as the full content — replacing the placeholder values:
+<pre><code>{
+  "mcpServers": {
+    "memwal": {
+      "command": "npx",
+      "args": ["-y", "@mysten-incubation/memwal-mcp"],
+      "env": {
+        "MEMWAL_PRIVATE_KEY": "your-delegate-private-key",
+        "MEMWAL_ACCOUNT_ID":  "your-account-id-0x..."
+      }
+    }
+  }
+}</code></pre>
         </div>
       `
     },
