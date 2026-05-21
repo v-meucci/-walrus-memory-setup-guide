@@ -657,9 +657,9 @@ const STEPS = {
       content: `
         <div class="prompt-box">
           <div class="prompt-label">💬 paste this into claude</div>
-          <div class="prompt-text">Set up Gemini CLI on my Mac with Walrus Memory: install @google/gemini-cli globally, create the folder ~/Documents/gemini-workspace, and configure ~/.gemini/settings.json to use the same Walrus Memory MCP server that you use (npx -y @mysten-incubation/memwal-mcp). Then tell me how to authenticate Gemini for the first time.</div>
+          <div class="prompt-text">Set up Gemini CLI on my Mac with Walrus Memory: install @google/gemini-cli globally, create the folder ~/Documents/gemini-workspace, and configure ~/.gemini/settings.json to use the Walrus Memory MCP server (npx -y @mysten-incubation/memwal-mcp) with env vars MEMWAL_PRIVATE_KEY: [paste your private key] and MEMWAL_ACCOUNT_ID: [paste your account id]. Then tell me how to authenticate Gemini for the first time.</div>
           <div class="prompt-actions">
-            <button class="btn btn-copy" onclick="cp(this,'Set up Gemini CLI on my Mac with Walrus Memory: install @google/gemini-cli globally, create the folder ~/Documents/gemini-workspace, and configure ~/.gemini/settings.json to use the same Walrus Memory MCP server that you use (npx -y @mysten-incubation/memwal-mcp). Then tell me how to authenticate Gemini for the first time.')">⎘ copy prompt</button>
+            <button class="btn btn-copy" onclick="cp(this,'Set up Gemini CLI on my Mac with Walrus Memory: install @google/gemini-cli globally, create the folder ~/Documents/gemini-workspace, and configure ~/.gemini/settings.json to use the Walrus Memory MCP server (npx -y @mysten-incubation/memwal-mcp) with env vars MEMWAL_PRIVATE_KEY: [paste your private key] and MEMWAL_ACCOUNT_ID: [paste your account id]. Then tell me how to authenticate Gemini for the first time.')">⎘ copy prompt</button>
             <a class="btn btn-dark" href="https://claude.ai" target="_blank">open claude ↗</a>
           </div>
         </div>
@@ -786,12 +786,16 @@ const STEPS = {
           <ol>
             <li>Install Gemini CLI:<pre><code>npm install -g @google/gemini-cli</code></pre></li>
             <li>Create a dedicated workspace folder (prevents mac security alerts):<pre><code>mkdir -p ~/Documents/gemini-workspace</code></pre></li>
-            <li>Open or create <code>~/.gemini/settings.json</code> and add:<pre><code>{
+            <li>Open or create <code>~/.gemini/settings.json</code> and add — using the same private key and account ID from step 3:<pre><code>{
   "sandbox": true,
   "mcpServers": {
     "memwal": {
       "command": "npx",
-      "args": ["-y", "@mysten-incubation/memwal-mcp"]
+      "args": ["-y", "@mysten-incubation/memwal-mcp"],
+      "env": {
+        "MEMWAL_PRIVATE_KEY": "your-delegate-private-key",
+        "MEMWAL_ACCOUNT_ID":  "your-account-id-0x..."
+      }
     }
   }
 }</code></pre></li>
