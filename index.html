@@ -62,6 +62,20 @@
       padding: 4px 12px;
     }
 
+    /* ── DISCLAIMER ──────────────────────────────────────────────── */
+    .disclaimer {
+      display: inline-block;
+      font-size: 12px;
+      color: #7a6a00;
+      background: #fffbe6;
+      border: 1px solid #e6c800;
+      border-radius: 6px;
+      padding: 7px 12px;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .disclaimer a { color: #7a6a00; font-weight: 600; }
+
     /* ── WRAPPER ─────────────────────────────────────────────────── */
     .wrapper {
       max-width: 720px;
@@ -493,8 +507,9 @@
 
   <!-- ══ SCREEN 0: MODE SELECT ══════════════════════════════════════ -->
   <div id="screen-mode">
-    <div class="page-title">setup guide</div>
+    <div class="page-title">walrus memory<br>setup guide</div>
     <div class="page-sub">give claude long-term memory that persists across every conversation. free during beta.</div>
+    <div class="disclaimer">⚠ this guide is unofficial and not approved by mysten labs or memwal. it's the result of personal testing — always refer to <a href="https://docs.memwal.ai" target="_blank">docs.memwal.ai</a> for the official documentation.</div>
     <div class="mode-question">how do you want to proceed?</div>
     <div class="mode-grid">
       <div class="mode-card" onclick="startWizard('prompt')">
