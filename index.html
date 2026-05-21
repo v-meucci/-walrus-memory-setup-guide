@@ -605,7 +605,7 @@ const STEPS = {
             <a class="btn btn-dark" href="https://claude.ai" target="_blank">open claude ↗</a>
           </div>
         </div>
-        <div class="warn">⚠️ when the login command opens your browser on <strong>memwal.ai/connect/mcp</strong> — click <strong>"Create Delegate Key"</strong> and approve. this saves a secure token on your mac so claude can authenticate automatically from now on.</div>
+        <div class="warn">⚠️ when the login command opens your browser — follow the on-screen instructions to approve the connection. this saves a secure token on your mac so claude can authenticate automatically from now on.</div>
         <div class="note">📌 come back here once claude tells you to restart.</div>
       `
     },
@@ -642,6 +642,7 @@ const STEPS = {
             <button class="btn btn-copy" onclick="cp(this,'Use memwal_remember to save: I work at Mysten Labs. Then use memwal_recall to find: where do I work?')">⎘ copy prompt</button>
           </div>
         </div>
+        <div class="note">📌 <strong>about memwal_forget:</strong> walrus storage is immutable — memories can't be truly deleted. memwal_forget marks a memory as outdated so future recalls ignore it, but it stays on walrus. this is by design.</div>
       `
     },
     {
@@ -700,7 +701,7 @@ const STEPS = {
         <div class="instr">
           <ol>
             <li>In your terminal, run:<pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre></li>
-            <li>Your browser will open — click <strong>"Create Delegate Key"</strong> and approve.</li>
+            <li>Your browser will open — follow the on-screen instructions to approve the connection.</li>
             <li>Done. The credentials are saved automatically to <code>~/.memwal/credentials.json</code> — you never need to touch them again.</li>
           </ol>
         </div>
@@ -753,6 +754,7 @@ const STEPS = {
             <li>Claude should retrieve the memory you just saved. ✓</li>
           </ol>
         </div>
+        <div class="note">📌 <strong>about memwal_forget:</strong> walrus storage is immutable — memories can't be truly deleted. memwal_forget marks a memory as outdated so future recalls ignore it, but it stays on walrus. this is by design.</div>
       `
     },
     {
@@ -790,7 +792,7 @@ const QUICK_PROMPTS = [
   { label: '🔍 recall preferences', text: 'What are my work preferences?' },
   { label: '⚡ save multiple facts', text: 'Save these facts to memory one by one: I\'m based in San Francisco. I lead the DevRel team. I prefer written docs over meetings. My timezone is PT.' },
   { label: '📋 list everything',    text: 'List all my Walrus memories.' },
-  { label: '🗑️ forget a memory',    text: 'Forget the Montreal offsite — it\'s been rescheduled.' },
+  { label: '↩️ mark as outdated',   text: 'The Montreal offsite has been rescheduled — mark that memory as outdated.' },
   { label: '📡 check connection',   text: 'Is Walrus Memory connected and working?' },
 ];
 
