@@ -579,7 +579,7 @@ const STEPS = {
     },
     {
       title: 'create your account',
-      sub: 'sign in at memwal.xyz with google — takes 30 seconds.',
+      sub: 'sign in at memwal.xyz with google — this creates your account and your personal memory wallet.',
       content: `
         <div class="prompt-box">
           <div class="prompt-label">💬 paste this into claude</div>
@@ -589,12 +589,13 @@ const STEPS = {
             <a class="btn btn-dark" href="https://memwal.xyz" target="_blank">open memwal.xyz ↗</a>
           </div>
         </div>
-        <div class="note">once you're logged in on memwal.xyz, click next.</div>
+        <div class="note">📌 once signed in, you'll see your <strong>account ID</strong> — a long address starting with <code>0x…</code> — in the top right corner of the dashboard. that's your unique identity on walrus. you don't need to copy it anywhere; it's saved automatically.</div>
+        <div class="ok-badge">✓ once you're logged in on memwal.xyz, click next</div>
       `
     },
     {
-      title: 'connect to claude',
-      sub: 'claude will run the login command and edit the config file for you.',
+      title: 'create a delegate key',
+      sub: 'a delegate key is a secure token that lets this mac connect to your memory. you only do this once per device.',
       content: `
         <div class="prompt-box">
           <div class="prompt-label">💬 paste this into claude</div>
@@ -604,7 +605,8 @@ const STEPS = {
             <a class="btn btn-dark" href="https://claude.ai" target="_blank">open claude ↗</a>
           </div>
         </div>
-        <div class="warn">⚠️ when the login command opens your browser — approve the connection. come back here once claude tells you to restart.</div>
+        <div class="warn">⚠️ when the login command opens your browser on <strong>memwal.ai/connect/mcp</strong> — click <strong>"Create Delegate Key"</strong> and approve. this saves a secure token on your mac so claude can authenticate automatically from now on.</div>
+        <div class="note">📌 come back here once claude tells you to restart.</div>
       `
     },
     {
@@ -625,7 +627,7 @@ const STEPS = {
             <button class="btn btn-copy" onclick="cp(this,'What Walrus Memory tools do you have available?')">⎘ copy prompt</button>
           </div>
         </div>
-        <div style="font-size:13px;color:var(--grey);margin:16px 0 8px;font-weight:500;">you should see these 5 tools:</div>
+        <div style="font-size:13px;color:var(--grey);margin:16px 0 8px;font-weight:500;">you should see these tools:</div>
         <div class="tool-list">
           <span class="tool-tag">memwal_remember</span>
           <span class="tool-tag">memwal_recall</span>
@@ -678,31 +680,34 @@ const STEPS = {
     },
     {
       title: 'create your account',
-      sub: 'sign in at memwal.xyz with google — takes 30 seconds.',
+      sub: 'sign in at memwal.xyz with google — this creates your account and your personal memory wallet.',
       content: `
         <div class="instr">
           <ol>
             <li>Go to <a href="https://memwal.xyz" target="_blank">memwal.xyz</a>.</li>
             <li>Click <strong>"Sign in with Google"</strong> and sign in with your Google account.</li>
             <li>Your account is created automatically — no extra steps needed.</li>
+            <li>You'll see your <strong>account ID</strong> in the top right corner — a long address starting with <code>0x…</code>. That's your unique identity on walrus. You don't need to copy it; it's saved automatically when you run the login command in the next step.</li>
           </ol>
         </div>
         <div class="ok-badge">✓ once you're logged in, click next</div>
       `
     },
     {
-      title: 'run the login command',
-      sub: 'authenticate the mcp server from your terminal.',
+      title: 'create a delegate key',
+      sub: 'a delegate key is a secure token that lets this mac connect to your memory. you only do this once per device.',
       content: `
         <div class="instr">
           <ol>
-            <li>Open <strong>Terminal</strong> (a regular terminal window — not inside Claude).</li>
-            <li>Run:<pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre></li>
-            <li>Your browser will open — approve the connection. Credentials are saved automatically.</li>
+            <li>Open <strong>Terminal</strong> (press <code>Cmd+Space</code>, type Terminal, press Enter). <br><em>Important: use a regular terminal window — not a terminal inside Claude.</em></li>
+            <li>Copy and paste this command, then press Enter:<pre><code>npx -y @mysten-incubation/memwal-mcp login --prod</code></pre></li>
+            <li>Your browser will automatically open to <strong>memwal.ai/connect/mcp</strong>.</li>
+            <li>On that page, click <strong>"Create Delegate Key"</strong> and approve.</li>
+            <li>You can close the browser tab. Back in terminal, you should see a confirmation message.</li>
           </ol>
         </div>
-        <div class="warn">⚠️ run this in a regular terminal window, not inside Claude's terminal.</div>
-        <div class="note">if you get <em>"npx not found"</em>, ask claude: "what is the full path to npx on my Mac?" and use that path instead of npx.</div>
+        <div class="note">📌 what just happened: a secure token (delegate key) was saved to <code>~/.memwal/credentials.json</code> on your mac. claude will use it automatically to authenticate — you never need to touch it again.</div>
+        <div class="warn">if you get <em>"npx not found"</em>: ask claude — "what is the full path to npx on my Mac?" — and use that full path instead of <code>npx</code>.</div>
       `
     },
     {
@@ -735,7 +740,7 @@ const STEPS = {
             <li>Type: <em>"What Walrus Memory tools do you have available?"</em></li>
           </ol>
         </div>
-        <div style="font-size:13px;color:var(--grey);margin:16px 0 8px;font-weight:500;">you should see these 5 tools:</div>
+        <div style="font-size:13px;color:var(--grey);margin:16px 0 8px;font-weight:500;">you should see these tools:</div>
         <div class="tool-list">
           <span class="tool-tag">memwal_remember</span>
           <span class="tool-tag">memwal_recall</span>
